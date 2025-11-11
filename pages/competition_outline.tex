@@ -1,55 +1,193 @@
 \section{Competition Outlines}
 
-\subsection{Flight Arena}
-\begin{enumerate}
-	\item{The flight arena will have a size of 6m height, 48m length, and 18m width}
-	\item{The flight arena will be indoors. Expect bad GPS signal and don't soley rely on gps for you state estimation.}
-\end{enumerate}
+\subsection{Playing Field}
+The playing field is a rectangular area with the following dimensions:
+\begin{itemize}
+	\item{Length: 25 meters}
+	\item{Width: 10 meters}
+	\item{Height: 6 meters}
+\end{itemize}
 
-\subsection{Game Dynamics}
-\begin{enumerate}
-	\item{All drones of one team have to start in their own territory.}
-	\item{\textcolor{red}{The drones can activate switches to label a flag as stolen by scanning a fiducial marker.}}
-\end{enumerate}
+% Abbildung der Ziel-Box (innerhalb der Section)
+The playing field is divided into three zones:
+\begin{itemize}
+	\item{Two Team Zones (red and blue): The home base of each team, where the drones start and land.}
+	\item{One Neutral Zone in the middle: A neutral territory for strategic maneuvers.}
+\end{itemize}
+The sizes shown in the graphic are approximate values. The exact dimensions may vary slightly.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.25] % größere Darstellung
+	% Maße (m)
+	\def\L{25}   % Länge (x)
+	\def\W{10}   % Breite (y)
+
+	% Rahmen
+	\draw[thick] (0,0) rectangle (\L,\W);
+
+	% Sektionen entlang der x-Achse (3 gleich große à ~8.33 m)
+	% Farbig: Grenze rot|grau = rot, Grenze grau|blau = blau
+	\draw[dashed,red!70] (8.33,0) -- (8.33,\W);
+	\draw[dashed,blue!70] (16.66,0) -- (16.66,\W);
+
+	% Sektionen entlang der y-Achse (3 gleich große à ~3.33 m)
+	\foreach \y in {3.33,6.66}{
+	\draw[dashed,gray!70] (0,\y) -- (\L,\y);
+	}
+
+	% Farbige Zonen: 3 gleich große Bereiche (links rot, Mitte grau, rechts blau)
+	\fill[red!5]   (0,0) rectangle (8.33,\W);
+	\fill[gray!10] (8.33,0) rectangle (16.66,\W);
+	\fill[blue!5]  (16.66,0) rectangle (\L,\W);
+
+	% Rand-Boxen an allen Maß-Enden (innen liegend)
+	% oben und unten an x = 5,10,15,20 (Ecken ausgenommen)
+	\foreach \x in {5,10,15,20}{
+	\draw[draw=gray,fill=white] (\x-0.3,0) rectangle ++(0.6,0.6);      % unten, innen
+	\draw[draw=gray,fill=white] (\x-0.3,\W-0.6) rectangle ++(0.6,0.6); % oben, innen
+	}
+	% links und rechts an y = 3.33,6.66 (Ecken ausgenommen)
+	\foreach \y in {3.33,6.66}{
+	\draw[draw=gray,fill=white] (0,\y-0.3) rectangle ++(0.6,0.6);       % links, innen
+	\draw[draw=gray,fill=white] (\L-0.6,\y-0.3) rectangle ++(0.6,0.6); % rechts, innen
+	}
+
+	% Beispiel-Targets (weiße Quadrate)
+	% Linke drei Boxen rot
+	\foreach \x/\y in {2/2, 3/8, 7/5}{
+	\draw[fill=red] (\x-0.5,\y-0.5) rectangle ++(1,1);
+	}
+	% Rechte drei Boxen blau (alle im blauen Segment > 16.66)
+	\foreach \x/\y in {21/3, 18/7, 23/5}{
+	\draw[fill=blue] (\x-0.5,\y-0.5) rectangle ++(1,1);
+	}
+
+	% Maßpfeile X-Achse (in 5-Sektionen)
+	\foreach \x/\lab in {0/5,5/10,10/15,15/20,20/25}{
+	\draw[<->] (\x,-1.2) -- (\x+5,-1.2)
+		node[midway,below]{\SI{5}{m}};
+	}
+
+	% Maßpfeile Y-Achse in 3 Sektionen (je ~3.33 m)
+	\foreach \ya/\yb in {0/3.33,3.33/6.66,6.66/10}{
+	\draw[<->] (\L+2,\ya) -- (\L+2,\yb) node[midway,right]{\SI{3.33}{m}};
+	}
+
+\end{tikzpicture}
+\caption{Field Dimensions}
+\label{fig:playing-field}
+\end{figure}
+
+\subsection{Target Objects}
+\begin{itemize}
+	\item{The goal: Change the color of the target objects to your team's color (red or blue)!}
+	\item{Each team zone has target objects, for a total of 6 in the playing field.}
+	\item{These objects change their color based on their interaction with the drones:}
+	\begin{itemize}
+		\item{Default state: Matches the color of the team zone.}
+		\item{Triggered state: Changes to the color of the drone that approaches and then flies away.}
+	\end{itemize}
+	\item{Dimensions of each target box:}
+	\begin{itemize}
+		\item{Height: \SI{55}{\centi\meter} (open: \SI{73}{\centi\meter})}
+		\item{Width: \SI{57.5}{\centi\meter}}
+		\item{Depth: \SI{37.5}{\centi\meter}}
+	\end{itemize}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.2\linewidth]{figures/brigk_SDC2024_206_R5P_0121.jpg}
+\caption{Example of an SDC target box.}
+\label{fig:target-box}
+\end{figure}
+\end{itemize}
+
+\subsection{Gameplay}
+\begin{itemize}
+	\item{Teams: 2-5 drones per team, ready to battle!}
+	\item{Start: Each team starts in its designated zone with its drones powered up and ready to go.}
+	\item{Action: Drones fly around the arena, triggering target objects to change color and score points for their team.}
+	\item{Target Configuration: The positioning of the target objects within the arena will vary for each match. This ensures that teams cannot pre-program their drones for fixed setups and must rely on real-time perception, adaptability, and autonomous decision-making during gameplay.}
+	\item{Scoring: After a drone successfully captures a target box (changes its color), it must return to its home base before the team earns 1 point for the capture. This rule encourages structured flight routes and coordinated teamwork among the drones. Teams are encouraged to use collaborative strategies to gain additional points or advantages:}
+	\begin{itemize}[label=--]
+		\item{Sequential Capture: Three different drones from the same team must capture the same box consecutively to secure it permanently or earn a bonus.}
+		\item{Simultaneous Capture: If two or more drones from the same team hover over a box at the same time, the color change occurs faster or the team earns extra points for synchronized teamwork.}
+		\item{Defense Strategy: Teams can coordinate to defend already captured boxes while others attempt new captures, creating dynamic offensive and defensive roles.}
+	\end{itemize}
+	\item{Time Limit: The game lasts for a maximum of 10 minutes. The team with the most points at the end wins the game!}
+\end{itemize}
+
+\subsection{Special Maneuver: Dominate the Arena!}
+\begin{itemize}
+	\item{Unlock the superpower: When all 6 target objects are the same color (either red or blue), your team can attempt a special maneuver.}
+	\item{Success! If all targets remain the same color after this action, your team wins the game instantly!}
+\end{itemize}
+
+\subsection{Tournament}
+\begin{itemize}
+	\item{The tournament follows a classic elimination format, where teams compete head-to-head in individual matches.}
+	\item{Two teams face each other in each match.}
+	\item{Pairings for the first round are determined by a random draw.}
+	\item{The winner of each match is the team that scores the most points.}
+	\item{Teams can earn an additional half point (\SI{0.5}{}) for performing a special maneuver, which may influence the overall ranking.}
+	\item{Each team plays only once per round.}
+	\item{If the number of teams is odd, one team will temporarily remain without an opponent:}
+	\begin{itemize}[label=--]
+		\item{Voluntary opponent teams are first requested.}
+		\item{If only one team volunteers, it is directly selected.}
+		\item{If multiple teams volunteer, the opponent is chosen by random draw.}
+		\item{If no teams volunteer, a random draw determines an opponent among all remaining teams.}
+	\end{itemize}
+	\item{The team selected as an additional opponent will have two match results, and only the better result counts toward its ranking.}
+	\item{In the event that an assigned opponent cannot participate, a replacement team is drawn by lot or, if unavailable, the match is scored as a technical win (default victory) for the ready team.}
+	\item{The final match is played as a Best of 3, determining the overall tournament champion.}
+\end{itemize}
+
+\subsection{Winning the Challenge}
+To win the Swarm Drone Challenge, a jury of experts will evaluate the teams' performance in the game as well as their technical approach and the presentation of their work. The winning team is determined by the jury. The specific evaluation criteria will be noted and communicated at a later time.
 
 \subsection{Teams}
-\begin{enumerate}
-	\item{Up to 5 team member per team}
-	\item{New team member are allowed to join but need to be registered with brigk.}
-\end{enumerate}
+\begin{itemize}
+	\item{Up to 5 team membersper team and be present on-site}
+	\item{New team members are allowed to join but need to be registered with brigkAIR.}
+\end{itemize}
 
 \subsection{Reimbursement}
-\begin{enumerate}
-	\item{\textcolor{red}{Up to 1000€ for drone parts}}
-	\item{\textcolor{red}{Max 5 orders}}
-\end{enumerate}
+\begin{itemize}
+	\item{Each team may place a maximum of five orders in total during the preparation period.}
+	\item{The combined value of all orders must not exceed €1000.}
+	\item{Teams are allowed to order parts and materials over time as needed, but must plan carefully since only five orders in total will be processed.}
+	\item{Until the final, the hardware remains the property of brigkAIR and is provided to the teams as a permanent loan.}
+\end{itemize}
 
-\subsection{Rewards / Scoring}
-\begin{enumerate}
-	\item{\textcolor{red}{Rule 1}}
-	\item{\textcolor{red}{Rule 2}}
-	\item{\textcolor{red}{Rule 3}}
-	\item{\textcolor{red}{Rule 4}}
-\end{enumerate}
+\subsection{Safety and Fair Play Rules}
+\begin{itemize}
+	\item{The teams are not allowed to start any motors before the official start signal is given by the judges.}
+	\item{Before the match begins, each team must call “Ready” to the judges to confirm that all drones and operators are in a safe and prepared state.}
+	\item{Leaving the flight arena during the match is strictly prohibited for safety reasons.}
+	\item{Any violation of these safety rules may result in disqualification from the current match or other disciplinary action as determined by the judges.}
+	\item{Safety takes priority over scoring — teams must always operate their drones in a controlled and responsible manner.}
+\end{itemize}
 
-\subsection{Panilty and disqualification}
-\begin{enumerate}
-	\item{\textcolor{red}{Rule 1}}
-	\item{\textcolor{red}{Rule 2}}
-	\item{\textcolor{red}{Rule 3}}
-	\item{\textcolor{red}{Rule 4}}
-\end{enumerate}
-
-\subsection{Interlectual property}
-\begin{enumerate}
-	\item{The IP stayes at the teams}
-	\item{The teams are encouraged to open source their solutions}
-	\item{The teams are required to prepare a presentation and explain their solution with technical details on the implementation.}
-\end{enumerate}
+\subsection{Intellectual property}
+\begin{itemize}
+	\item{The IP stays with the teams. All intellectual property rights of the hardware and software developed for this challenge remain with the respective teams.}
+	\item{Exceptions: Any hardware, components, or materials provided by brigkAir remain the property of brigkAir and must be returned after the event if requested.}
+	\item{Teams are encouraged to open-source their solutions. Doing so may have a positive influence on the jury’s evaluation, as it promotes collaboration and knowledge sharing.}
+	\item{Each team must submit a technical report of up to five (5) A4 pages, describing the design, implementation, and functionality of their solution}
+	\item{In addition, teams are required to prepare a presentation explaining their approach and key technical aspects to the judges during the evaluation phase.}
+	\item{The presentation shall be five (5) minutes long, prepared in PowerPoint (.ppt) format, and held during both the Qualification and the Final rounds} 
+\end{itemize}
 
 \subsection{Responsibilities}
-\begin{enumerate}
-	\item{\textcolor{red}{Each team must have a spotter}}
-	\item{\textcolor{red}{in case of a collision: Who is reponsible? }}
-
-\end{enumerate}
+\begin{itemize}
+	\item{Each team must designate at least one Spotter, who assists the pilot in maintaining visual awareness of the drone and ensures safe operation within the arena.}
+	\item{Each team must also appoint a Safety Officer, who serves as the primary contact for all safety-related matters between the team and the event committee.}
+	\begin{itemize}[label=--]
+		\item{The Safety Officer must be present during all matches.}
+		\item{They hold the authority to initiate an immediate stop of the match (“Killswitch”) if any unsafe situation occurs.}
+		\item{The Safety Officer is responsible for ensuring that all team members follow the safety protocols at all times.}
+		\item{Prior to the Fly-Off, each team must submit information about their Safety Officer (name, role, and contact details) to the event organizers.}
+	\end{itemize}
+	\item{Teams are responsible for virtually validating their solution before the competition to ensure functional and safe system behavior.}
+\end{itemize}

@@ -1,48 +1,178 @@
 \section{Technical Regulations}
-\subsection{Tagging}
-\begin{enumerate}
-	\item{No other drones must be physically harmed}
-	\item{\textcolor{red}{Tagging could be implemented using detection in camera frame}}
-\end{enumerate}
 
 \subsection{Positioning}
-\begin{enumerate}
-	\item{\textcolor{red}{Indoor positioning system?}}
-	\item{\textcolor{red}{mocap?}}
-	\item{\textcolor{red}{slam?}}
+The challenge will take place in a hangar at the Manching Airport (48°43'21.7"N 11°33'04.9"E). To improve the state estimation in a potential GPS denied environment, a camera based positioning system using ArUco marker can be used.
 
-\end{enumerate}
+Two ArUco markers are attached to each pillar in the hangar. Figure~\ref{fig:aruco-markers} illustrates the IDs of the markers that are attached to the pillars, where the lower ArUco marker is mounted at a height of 2m and the upper marker at 4m. In the notation ``X/Y'', the first number (X) corresponds to the upper marker at 4m height and the second number (Y) to the lower marker at 2m height.
 
-\subsection{Sense and Avoid}
-\begin{enumerate}
-	\item{Each drone should be capable of detecting static obstacles and other drones.}
-	\item{Each drone must avoid colisions with other drones}
-\end{enumerate}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.25] % größere Darstellung
+% Maße (m)
+\def\L{25}   % Länge (x)
+\def\W{10}   % Breite (y)
+
+% Rahmen
+\draw[thick] (0,0) rectangle (\L,\W);
+
+% Sektionen entlang der x-Achse (3 gleich große à ~8.33 m)
+% Farbig: Grenze rot|grau = rot, Grenze grau|blau = blau
+\draw[dashed,red!70] (8.33,0) -- (8.33,\W);
+\draw[dashed,blue!70] (16.66,0) -- (16.66,\W);
+
+% Sektionen entlang der y-Achse (3 gleich große à ~3.33 m)
+\foreach \y in {3.33,6.66}{
+\draw[dashed,gray!70] (0,\y) -- (\L,\y);
+}
+
+% Farbige Zonen: 3 gleich große Bereiche (links rot, Mitte grau, rechts blau)
+\fill[red!5]   (0,0) rectangle (8.33,\W);
+\fill[gray!10] (8.33,0) rectangle (16.66,\W);
+\fill[blue!5]  (16.66,0) rectangle (\L,\W);
+
+% Rand-Boxen an allen Maß-Enden (außen liegend)
+% oben und unten an x = 5,10,15,20 (Ecken ausgenommen)
+\foreach \x in {5,10,15,20}{
+\draw[draw=gray,fill=white] (\x-0.3,-0.3) rectangle ++(0.6,0.6);      % unten, außen
+\draw[draw=gray,fill=white] (\x-0.3,\W-0.3) rectangle ++(0.6,0.6); % oben, außen
+}
+% links und rechts an y = 3.33,6.66 (Ecken ausgenommen)
+\foreach \y in {3.33,6.66}{
+\draw[draw=gray,fill=white] (-0.3,\y-0.3) rectangle ++(0.6,0.6);       % links, außen
+\draw[draw=gray,fill=white] (\L-0.3,\y-0.3) rectangle ++(0.6,0.6); % rechts, außen
+}
+
+% Beispiel-Targets (weiße Quadrate)
+% Linke drei Boxen rot
+\foreach \x/\y in {2/2, 3/8, 7/5}{
+\draw[fill=red] (\x-0.5,\y-0.5) rectangle ++(1,1);
+}
+% Rechte drei Boxen blau (alle im blauen Segment > 16.66)
+\foreach \x/\y in {21/3, 18/7, 23/5}{
+\draw[fill=blue] (\x-0.5,\y-0.5) rectangle ++(1,1);
+}
+
+	% ArUco Marker außerhalb des Feldes (größer und weiter außen)
+	% Top side: Markers 18/17, 20/19, 22/21, 24/23
+	\draw[fill=white,draw=black] (5-1.6,\W+0.8) rectangle ++(3.2,2.0);
+	\node[font=\tiny] at (5,\W+1.8) {18{/}17};
+	\draw[fill=white,draw=black] (10-1.6,\W+0.8) rectangle ++(3.2,2.0);
+	\node[font=\tiny] at (10,\W+1.8) {20{/}19};
+	\draw[fill=white,draw=black] (15-1.6,\W+0.8) rectangle ++(3.2,2.0);
+	\node[font=\tiny] at (15,\W+1.8) {22{/}21};
+	\draw[fill=white,draw=black] (20-1.6,\W+0.8) rectangle ++(3.2,2.0);
+	\node[font=\tiny] at (20,\W+1.8) {24{/}23};
+
+	% Bottom side: Markers 12/11, 10/9, 8/7, 6/5
+	\draw[fill=white,draw=black] (5-1.6,-2.8) rectangle ++(3.2,2.0);
+	\node[font=\tiny] at (5,-1.8) {12{/}11};
+	\draw[fill=white,draw=black] (10-1.6,-2.8) rectangle ++(3.2,2.0);
+	\node[font=\tiny] at (10,-1.8) {10{/}9};
+	\draw[fill=white,draw=black] (15-1.6,-2.8) rectangle ++(3.2,2.0);
+	\node[font=\tiny] at (15,-1.8) {8{/}7};
+	\draw[fill=white,draw=black] (20-1.6,-2.8) rectangle ++(3.2,2.0);
+	\node[font=\tiny] at (20,-1.8) {6{/}5};
+
+% Marker 0 (zwischen 10/9 und 8/7, leicht erhöht)
+\draw[fill=white,draw=black] (12.5-0.8,-2.0) rectangle ++(1.6,1.6);
+\node[font=\tiny] at (12.5,-1.2) {0};
+
+	% Left side: Markers 16/15 (oben), 14/13 (unten)
+	\draw[fill=white,draw=black] (-2.5,6.66-1.0) rectangle ++(2.0,2.5);
+	\node[font=\tiny,rotate=90] at (-1.5,6.66+0.25) {16{/}15};
+	\draw[fill=white,draw=black] (-2.5,3.33-1.0) rectangle ++(2.0,2.5);
+	\node[font=\tiny,rotate=90] at (-1.5,3.33+0.25) {14{/}13};
+
+	% Right side: Markers 2/1 (oben), 4/3 (unten) - weiter nach rechts
+	\draw[fill=white,draw=black] (\L+1.0,6.66-1.0) rectangle ++(2.0,2.5);
+	\node[font=\tiny,rotate=90] at (\L+2.0,6.66+0.25) {2{/}1};
+	\draw[fill=white,draw=black] (\L+1.0,3.33-1.0) rectangle ++(2.0,2.5);
+	\node[font=\tiny,rotate=90] at (\L+2.0,3.33+0.25) {4{/}3};
+
+\end{tikzpicture}
+\caption{ArUco Marker ID's}
+\label{fig:aruco-markers}
+\end{figure}
+
+None of the hangar's walls are aligned to the north or the east direction. To simplify the positioning system an additional marker with the ID 0 is placed at the back wall in the center of the field. This 0 marker can be used to attach the local world coordinate system to it.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.2\linewidth]{figures/Aruco0.png}
+\caption{Origin point of the local coordinate frame}
+\label{fig:aruco-0}
+\end{figure}
+
+The ArUco markers are from the $\mathit{DICT}_{4\times450}$ dictionary and have a size of 0.5m x 0.5m. This information enables positioning in the arena with a view of a single marker.
+
+\subsection{Collision Prevention}
+\begin{itemize}
+	\item{Each drone is recommended to be equipped with a spherical protection case, which helps to protect both the drone itself and other drones from damage during the match.}
+	\item{The protective spheres must be provided by the teams themselves. brigkAir does not supply drone protection equipment.}
+	\item{If a drone becomes damaged or inoperative during a match, no replacement drone may be added to the team’s lineup. The team must continue the match with the remaining functional drones.}
+	\item{Each team may register one (1) spare drone as a backup before the tournament begins. This spare drone can only be used to replace a malfunctioning unit between matches, not during an active match.}
+	\item{Teams must always avoid intentional collisions or actions that could cause damage to other drones or the arena. Fair and safe flying behavior is mandatory.}
+	\item{If a team’s number of operational drones drops below two, the team will be disqualified from the current match for safety and fairness reasons.}
+\end{itemize}
+
+\subsection{Continuity of C2 Link}
+\begin{itemize}
+	\item{A continuous Command and Control (C2) link between the operator and each drone must be maintained at all times.}
+	\item{If the C2 link is interrupted or lost, an automatic flight termination or controlled landing must be initiated no later than 2 seconds after the loss of connection.}
+	\item{n the event of a C2 link failure, the match will be paused or safely terminated by the judges. The affected team will not be penalized, as maintaining safety is the highest priority in this competition.}
+	\item{Once the drone and the area are confirmed safe, the judges will decide whether the match can be resumed or restarted, depending on the situation and remaining time.}
+\end{itemize}
 
 \subsection{Emergency Shutoff and Kill Switch}
-\begin{enumerate}
-	\item{\textcolor{red}{Each drone must be equpiied with a phsical or virtual kill switch.}}
-	\item{\textcolor{red}{Activatoin of the kill switch results in immidiate landing or motor Shutoff}}
-	\item{\textcolor{red}{One button to land whole swarm}}
-\end{enumerate}
-
-\subsection{Frequencies and communications}
-\begin{enumerate}
-	\item{\textcolor{red}{Rule 1}}
-	\item{\textcolor{red}{Rule 2}}
-	\item{\textcolor{red}{Rule 3}}
-	\item{\textcolor{red}{Rule 4}}
-\end{enumerate}
+\begin{itemize}
+	\item{Each drone must be equipped with a physical or virtual kill switch, accessible to the operator or the team’s Safety Officer.}
+	\item{Activation of the kill switch must result in an immediate landing or motor shutdown of the drone.}
+	\item{Each team must have one master button or command that can simultaneously land or shut down all drones of the team in case of an emergency.}
+	\item{Improper or unsafe operation after a kill-switch event may lead to disqualification, but safe and responsible use of the emergency system will not result in penalties.}
+\end{itemize}
 
 \subsection{Size and weight limits}
-\begin{enumerate}
-	\item{Below 25kg per drone}
-	\item{The drone swarm must consist of no more than 8 drones}
-	\item{The drone swarm must consist of more that 2 drones.}
-\end{enumerate}
+\begin{itemize}
+	\item{The Maximum Take-Off Mass (MTOM) of each drone must be below 10 kg.The declared TOM includes all payload, batteries, and protective equipment.}
+	\item{Each drone swarm may consist of a maximum of 5 drones and at least 2 drones.}
+\end{itemize}
+
+\subsection{Drone identification}
+\begin{itemize}
+	\item{Each drone must be equipped with an RFID marker for automatic identification by the target objects.}
+	\item{The RFID markers will be provided by brigkAIR at the event and must be properly attached according to the organizer’s specifications.}
+	\item{Teams are responsible for ensuring that the RFID marker is securely mounted and fully functional throughout the competition.} 
+\end{itemize}
+
+\subsection{Swarming Functionality}
+For the purpose of this challenge, swarming functionality is defined as the coordinated and cooperative behavior of two or more drones that dynamically share information to achieve a common objective.
+\begin{itemize}
+	\item{Each team must implement and demonstrate a swarming functionality in accordance with the competition’s definition of swarm behavior.}
+	\item{The teams shall describe and explain their swarming approach in both the technical report and the presentation during the Qualification and Final stages.}
+	\item{The demonstration must clearly show coordination and communication between multiple drones — i.e., the drones must act as a collective system rather than as independent units.}
+	\item{The swarming functionality may be realized using different communication or sensing methods, for example:}
+	\begin{itemize}[label=--]
+		\item{Light-based signaling (e.g., LEDs, optical markers)}
+		\item{RF-based communication (e.g., Wi-Fi, LoRa, Bluetooth, UWB)}
+		\item{EO-based coordination (electro-optical vision systems, camera tracking)}
+		\item{Acoustic or infrared systems, or other innovative interaction methods} 
+	\end{itemize}
+\end{itemize}
 
 \subsection{Ground Control Station}
-\begin{enumerate}
-	\item{It is not required that the computing must be performed soley onboard.}
-	\item{\textcolor{red}{The bahavior of individual drones can be either controlled by a single agend, which is aware of the global state or by one agend per drone.}}
-\end{enumerate}
+\begin{itemize}
+	\item{Computing and control do not have to be performed exclusively onboard the drones. A combination of onboard processing and ground-based computation via a Ground Control Station is permitted.}
+	\item{The swarm behavior may be governed by:}
+	\begin{itemize}[label=--]
+		\item{A single centralized agent that maintains awareness of the global swarm state, or}
+		\item{Distributed agents, where each drone operates semi-independently but coordinates with others through local communication or sensing.}
+	\end{itemize}
+	\item{Teams must describe their chosen swarm architecture and communication topology in their technical documentation.}
+\end{itemize}
+
+\subsection{Arbiter / Judge}
+\begin{itemize}
+	\item{A Ground Truth and Scoring Display visible to both teams is desired. This display should show the current match scores.}
+	\item{However, no technical solution is provided by the organizers that collects or distributes real-time information on positioning, scoring, or any other referee-related data.}
+	\item{Teams are therefore encouraged to develop their own sensing and evaluation systems if they wish to monitor swarm position or performance metrics during the match.} 
+\end{itemize}
