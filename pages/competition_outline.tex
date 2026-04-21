@@ -35,9 +35,7 @@ The sizes shown in the graphic are approximate values. The exact dimensions may 
 	\draw[dashed,blue!70] (\xB,0) -- (\xB,\W);
 
 	% Sektionen entlang der y-Achse (3 gleich große à ~3.33 m)
-	\foreach \y in {3.33,6.66}{
-	\draw[dashed,gray!70] (0,\y) -- (\L,\y);
-	}
+	\draw[dashed,gray!70] (0,0.5) -- (\L,0.5);
 
 	% Farbige Zonen
 	\fill[red!5]   (0,0) rectangle (\xA,\W);
@@ -56,24 +54,27 @@ The sizes shown in the graphic are approximate values. The exact dimensions may 
 	\draw[draw=gray,fill=white] (\L-0.6,\y-0.3) rectangle ++(0.6,0.6);
 	}
 
-	% Beispiel-Targets (linke rot)
-	\foreach \x/\y in {2/2, 3/8, 6/5}{
+
+	% Beispiel-Targets (weiße Quadrate)
+	% Linke drei Boxen rot
+	\foreach \x/\y in {5/2, 2/5, 5/8}{
 	\draw[fill=red] (\x-0.5,\y-0.5) rectangle ++(1,1);
 	}
-
-	% Beispiel-Targets (rechte blau) -> müssen jetzt im blauen Segment > 13.33 liegen
-	\foreach \x/\y in {16/3, 14/7, 18/5}{
+	% Rechte drei Boxen blau (alle im blauen Segment > 16.66)
+	\foreach \x/\y in {15/2, 18/5, 15/8}{
 	\draw[fill=blue] (\x-0.5,\y-0.5) rectangle ++(1,1);
 	}
+
+
 
 	% Maßpfeile X-Achse (in 5m-Sektionen): 0–5,5–10,10–15,15–20
 	\foreach \x in {0,5,10,15}{
 	\draw[<->] (\x,-1.2) -- (\x+5,-1.2) node[midway,below]{\SI{5}{m}};
 	}
 
-	% Maßpfeile Y-Achse (je ~3.33 m)
-	\foreach \ya/\yb in {0/3.33,3.33/6.66,6.66/10}{
-	\draw[<->] (\L+2,\ya) -- (\L+2,\yb) node[midway,right]{\SI{3.33}{m}};
+	% Maßpfeile Y-Achse (je ~5.0 m)
+	\foreach \ya/\yb in {0/5.0,5.0/10}{
+	\draw[<->] (\L+2,\ya) -- (\L+2,\yb) node[midway,right]{\SI{5}{m}};
 	}
 
 \end{tikzpicture}
