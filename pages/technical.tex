@@ -1,6 +1,44 @@
-\section{Technical Regulations}
+% !TeX root = ../sdc_regulations.tex
 
-\subsection{Positioning}
+\color{blue}
+\section[Technical Regulations]{\textcolor{blue}{Technical Regulations}}
+
+\subsection[Drone Requirements]{\textcolor{blue}{Drone Requirements}}
+\begin{itemize}
+	\item{The Maximum Take-Off Mass (MTOM) of each drone must be below 10 kg. The declared TOM includes all payload, batteries, and protective equipment.}
+	\item{Each drone swarm may consist of a maximum of 5 drones and at least 2 drones.}
+	\item{Each drone must be equipped with an RFID marker for automatic identification by the target objects.}
+	\item{The RFID markers will be provided by brigkAIR at the event and must be properly attached according to the organizer's specifications.}
+	\item{Teams are responsible for ensuring that the RFID marker is securely mounted and fully functional throughout the competition.}
+\end{itemize}
+
+\subsection[Swarming Functionality]{\textcolor{blue}{Swarming Functionality}}
+For the purpose of this challenge, swarming functionality is defined as the coordinated and cooperative behavior of two or more drones that dynamically share information to achieve a common objective.
+\begin{itemize}
+	\item{Each team must implement and demonstrate a swarming functionality in accordance with the competition's definition of swarm behavior.}
+	\item{The teams shall describe and explain their swarming approach in both the technical report and the presentation during the Qualification and Final stages.}
+	\item{The demonstration must clearly show coordination and communication between multiple drones — i.e., the drones must act as a collective system rather than as independent units.}
+	\item{The swarming functionality may be realized using different communication or sensing methods, for example:}
+	\begin{itemize}[label=--]
+		\item{Light-based signaling (e.g., LEDs, optical markers)}
+		\item{RF-based communication (e.g., Wi-Fi, LoRa, Bluetooth, UWB)}
+		\item{EO-based coordination (electro-optical vision systems, camera tracking)}
+		\item{Acoustic or infrared systems, or other innovative interaction methods}
+	\end{itemize}
+\end{itemize}
+
+\subsection[Ground Control Station]{\textcolor{blue}{Ground Control Station}}
+\begin{itemize}
+	\item{Computing and control do not have to be performed exclusively onboard the drones. A combination of onboard processing and ground-based computation via a Ground Control Station is permitted.}
+	\item{The swarm behavior may be governed by:}
+	\begin{itemize}[label=--]
+		\item{A single centralized agent that maintains awareness of the global swarm state, or}
+		\item{Distributed agents, where each drone operates semi-independently but coordinates with others through local communication or sensing.}
+	\end{itemize}
+	\item{Teams must describe their chosen swarm architecture and communication topology in their technical documentation.}
+\end{itemize}
+
+\subsection[Positioning System]{\textcolor{blue}{Positioning System}}
 The challenge location is still to be determined and will be announced during preparation phase. To improve the state estimation in a potential GPS denied environment, a camera based positioning system using ArUco marker can be used.
 
 Two ArUco markers are attached to each pillar in the hangar. Figure~\ref{fig:aruco-markers} illustrates the IDs of the markers that are attached to the pillars, where the lower ArUco marker is mounted at a height of 2m and the upper marker at 4m. In the notation ``X/Y'', the first number (X) corresponds to the upper marker at 4m height and the second number (Y) to the lower marker at 2m height.
@@ -79,74 +117,10 @@ Two ArUco markers are attached to each pillar in the hangar. Figure~\ref{fig:aru
 \end{figure}
 The ArUco markers are from the $DICT\_4\times4\_50$ dictionary and have a size of 0.5m x 0.5m. This information enables positioning in the arena with a view of a single marker.
 
-\subsection{Collision Prevention}
-\begin{itemize}
-	\item{Each drone is recommended to be equipped with a spherical protection case, which helps to protect both the drone itself and other drones from damage during the match.}
-	\item{The protective spheres must be provided by the teams themselves. brigkAir does not supply drone protection equipment.}
-	\item{If a drone becomes damaged or inoperative during a match, no replacement drone may be added to the team’s lineup. The team must continue the match with the remaining functional drones.}
-	\item{Each team may register one (1) spare drone as a backup before the tournament begins. This spare drone can only be used to replace a malfunctioning unit between matches, not during an active match.}
-	\item{Teams must always avoid intentional collisions or actions that could cause damage to other drones or the arena. Fair and safe flying behavior is mandatory.}
-	\item{If a team’s number of operational drones drops below two, the team will be disqualified from the current match for safety and fairness reasons.}
-\end{itemize}
-
-\subsection{Continuity of C2 Link}
-\begin{itemize}
-	\item{A continuous Command and Control (C2) link between the operator and each drone must be maintained at all times.}
-	\item{If the C2 link is interrupted or lost, an automatic flight termination or controlled landing must be initiated no later than 2 seconds after the loss of connection.}
-	\item{In the event of a C2 link failure, the match will be paused or safely terminated by the judges. The affected team will not be penalized, as maintaining safety is the highest priority in this competition.}
-	\item{Once the drone and the area are confirmed safe, the judges will decide whether the match can be resumed or restarted, depending on the situation and remaining time.}
-\end{itemize}
-
-\subsection{Emergency Shutoff and Kill Switch}
-\begin{itemize}
-	\item{Each drone must be equipped with a physical or virtual kill switch, accessible to the operator or the team’s Safety Officer, and its correct functionality must be demonstrated prior to the match.}
-	\item{Activation of the kill switch must result in an immediate landing or motor shutdown of the drone.}
-	\item{Each team must have one master button or command that can simultaneously land or shut down all drones of the team in case of an emergency.}
-	\item{Improper or unsafe operation after a kill-switch event may lead to disqualification, but safe and responsible use of the emergency system will not result in penalties.}
-\end{itemize}
-
-\subsection{Size and weight limits}
-\begin{itemize}
-	\item{The Maximum Take-Off Mass (MTOM) of each drone must be below 10 kg.The declared TOM includes all payload, batteries, and protective equipment.}
-	\item{Each drone swarm may consist of a maximum of 5 drones and at least 2 drones.}
-\end{itemize}
-
-\subsection{Drone identification}
-\begin{itemize}
-	\item{Each drone must be equipped with an RFID marker for automatic identification by the target objects.}
-	\item{The RFID markers will be provided by brigkAIR at the event and must be properly attached according to the organizer’s specifications.}
-	\item{Teams are responsible for ensuring that the RFID marker is securely mounted and fully functional throughout the competition.} 
-\end{itemize}
-
-\subsection{Swarming Functionality}
-For the purpose of this challenge, swarming functionality is defined as the coordinated and cooperative behavior of two or more drones that dynamically share information to achieve a common objective.
-\begin{itemize}
-	\item{Each team must implement and demonstrate a swarming functionality in accordance with the competition’s definition of swarm behavior.}
-	\item{The teams shall describe and explain their swarming approach in both the technical report and the presentation during the Qualification and Final stages.}
-	\item{The demonstration must clearly show coordination and communication between multiple drones — i.e., the drones must act as a collective system rather than as independent units.}
-	\item{The swarming functionality may be realized using different communication or sensing methods, for example:}
-	\begin{itemize}[label=--]
-		\item{Light-based signaling (e.g., LEDs, optical markers)}
-		\item{RF-based communication (e.g., Wi-Fi, LoRa, Bluetooth, UWB)}
-		\item{EO-based coordination (electro-optical vision systems, camera tracking)}
-		\item{Acoustic or infrared systems, or other innovative interaction methods} 
-	\end{itemize}
-\end{itemize}
-
-\subsection{Ground Control Station}
-\begin{itemize}
-	\item{Computing and control do not have to be performed exclusively onboard the drones. A combination of onboard processing and ground-based computation via a Ground Control Station is permitted.}
-	\item{The swarm behavior may be governed by:}
-	\begin{itemize}[label=--]
-		\item{A single centralized agent that maintains awareness of the global swarm state, or}
-		\item{Distributed agents, where each drone operates semi-independently but coordinates with others through local communication or sensing.}
-	\end{itemize}
-	\item{Teams must describe their chosen swarm architecture and communication topology in their technical documentation.}
-\end{itemize}
-
-\subsection{Arbiter / Judge}
+\subsection[Arbiter / Judge]{\textcolor{blue}{Arbiter / Judge}}
 \begin{itemize}
 	\item{A Ground Truth and Scoring Display visible to both teams is desired. This display should show the current match scores.}
 	\item{However, no technical solution is provided by the organizers that collects or distributes real-time information on positioning, scoring, or any other referee-related data.}
-	\item{Teams are therefore encouraged to develop their own sensing and evaluation systems if they wish to monitor swarm position or performance metrics during the match.} 
+	\item{Teams are therefore encouraged to develop their own sensing and evaluation systems if they wish to monitor swarm position or performance metrics during the match.}
 \end{itemize}
+\color{black}
