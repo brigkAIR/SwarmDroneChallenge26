@@ -1,0 +1,145 @@
+\section{Game Logic}
+
+\subsection{Goal}
+
+Score points by conquering enemy boxes and finish the match with more points than the other team, or win instantly with a Special Maneuver.
+
+Important:
+\begin{itemize}
+    \item A team may play with any number of drones.
+    \item \texttt{5-point} and \texttt{10-point} captures are only possible if the team started the game with at least \texttt{2} drones.
+    \item With fewer than \texttt{2} drones, only \texttt{1-point} captures and the Special Maneuver are possible.
+\end{itemize}
+
+\subsection{ArUco Markers}
+
+Each physical box displays an ArUco marker from the \texttt{DICT\_4X4\_50} dictionary.
+
+The marker ID is encoded as follows:
+\begin{itemize}
+    \item \texttt{4x} means the box is currently red.
+    \item \texttt{3x} means the box is currently blue.
+    \item The second digit is the box ID.
+\end{itemize}
+
+Examples:
+\begin{itemize}
+    \item Box \texttt{1} shown as red has marker ID \texttt{41}.
+    \item Box \texttt{2} shown as red has marker ID \texttt{42}.
+    \item Box \texttt{3} shown as red has marker ID \texttt{43}.
+    \item Box \texttt{4} shown as blue has marker ID \texttt{34}.
+    \item Box \texttt{5} shown as blue has marker ID \texttt{35}.
+    \item Box \texttt{6} shown as blue has marker ID \texttt{36}.
+\end{itemize}
+
+When a box is captured, the marker changes with the box color.
+
+Example:
+\begin{itemize}
+    \item If box \texttt{3} is currently red, it shows marker \texttt{43}.
+    \item If box \texttt{3} is captured by blue, it changes to marker \texttt{33}.
+    \item If it is captured back by red, it changes back to \texttt{43}.
+\end{itemize}
+
+\subsection{Capturing a Box}
+
+An enemy box changes to your team color if:
+\begin{itemize}
+    \item your drone hovers over an enemy box for at least \texttt{2 seconds}
+    \item no defending drone is detected in that box
+\end{itemize}
+A home zone box changes back to your team color immediately.
+
+After a successful capture, the box is locked for \texttt{5 seconds}.
+
+\subsubsection{1 Point}
+
+You get \texttt{1 point} if:
+\begin{itemize}
+    \item your team captures an enemy box
+    \item the capturing drone gets back home
+    \item this happens before that box is captured back by the other team
+\end{itemize}
+
+If the box is captured back first:
+\begin{itemize}
+    \item you still get \texttt{1 point} only if the capturing drone had already reached home
+    \item otherwise you get \texttt{0}
+\end{itemize}
+
+\subsubsection{5 Points}
+
+You get \texttt{5 points} if:
+\begin{itemize}
+    \item your team captures an enemy box
+    \item your team started the game with at least \texttt{2} drones
+    \item at the moment of capture, all drones of your team are outside your home zone
+    \item then all your drones get back home
+    \item this happens before that box is captured back
+\end{itemize}
+
+If one of your drones was still at home when the box was captured:
+\begin{itemize}
+    \item \texttt{5 points} are not possible for that attempt
+\end{itemize}
+
+If the box is captured back before all drones return:
+\begin{itemize}
+    \item \texttt{5 points} are no longer possible
+    \item you may still get \texttt{1 point} if the capturing drone had already reached home
+\end{itemize}
+
+\subsubsection{10 Points}
+
+You get \texttt{10 points} if:
+\begin{itemize}
+    \item two different drones of your team capture two different boxes
+    \item within less than \texttt{1 second}
+    \item both boxes are in the enemy zone
+    \item your team started the game with at least \texttt{2} drones
+\end{itemize}
+
+If the timing is too slow:
+\begin{itemize}
+    \item there is no \texttt{10-point} capture
+    \item both captures are treated separately and can still become \texttt{1} or \texttt{5}
+\end{itemize}
+
+If three boxes are captured almost at the same time:
+\begin{itemize}
+    \item one valid pair can become \texttt{10 points}
+    \item the third capture is still treated separately
+\end{itemize}
+
+\subsubsection{Home Zone Recapture}
+
+If your team takes back a box in your own home zone:
+\begin{itemize}
+    \item the box changes back immediately
+    \item you get \texttt{0 points}
+\end{itemize}
+
+This prevents defensive point farming.
+
+\subsubsection{Special Maneuver}
+
+If one team controls all \texttt{6} boxes for at least \texttt{5 seconds}:
+\begin{itemize}
+    \item that team wins the match
+\end{itemize}
+
+After that, there is still a final \texttt{10-second} resolution window:
+\begin{itemize}
+    \item already-open scoring attempts may still finish
+    \item but the winning team does not change anymore
+\end{itemize}
+
+\subsection{Important additional information}
+
+\begin{itemize}
+    \item One drone can only start one scoring attempt at a time.
+    \item That drone can only start a new attempt after it was detected back in its own home zone.
+    \item One capture attempt can only score once: \texttt{1}, \texttt{5}, or \texttt{10}.
+    \item These scores do not stack for the same attempt.
+    \item Priority is: Special Maneuver $>$ \texttt{10} $>$ \texttt{5} $>$ \texttt{1}.
+\end{itemize}
