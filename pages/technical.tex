@@ -1,9 +1,8 @@
 % !TeX root = ../sdc_regulations.tex
 
-\color{blue}
-\section[Technical Regulations]{\textcolor{blue}{Technical Regulations}}
+\section{Technical Regulations}
 
-\subsection[Drone Requirements]{\textcolor{blue}{Drone Requirements}}
+\subsection{Drone Requirements}
 \begin{itemize}
 	\item{The Maximum Take-Off Mass (MTOM) of each drone must be below 10 kg. The declared TOM includes all payload, batteries, and protective equipment.}
 	\item{Each drone swarm may consist of a maximum of 5 drones and at least 2 drones.}
@@ -12,7 +11,7 @@
 	\item{Teams are responsible for ensuring that the RFID marker is securely mounted and fully functional throughout the competition.}
 \end{itemize}
 
-\subsection[Swarming Functionality]{\textcolor{blue}{Swarming Functionality}}
+\subsection{Swarming Functionality}
 For the purpose of this challenge, swarming functionality is defined as the coordinated and cooperative behavior of two or more drones that dynamically share information to achieve a common objective.
 \begin{itemize}
 	\item{Each team must implement and demonstrate a swarming functionality in accordance with the competition's definition of swarm behavior.}
@@ -27,7 +26,7 @@ For the purpose of this challenge, swarming functionality is defined as the coor
 	\end{itemize}
 \end{itemize}
 
-\subsection[Ground Control Station]{\textcolor{blue}{Ground Control Station}}
+\subsection{Ground Control Station}
 \begin{itemize}
 	\item{Computing and control do not have to be performed exclusively onboard the drones. A combination of onboard processing and ground-based computation via a Ground Control Station is permitted.}
 	\item{The swarm behavior may be governed by:}
@@ -38,8 +37,8 @@ For the purpose of this challenge, swarming functionality is defined as the coor
 	\item{Teams must describe their chosen swarm architecture and communication topology in their technical documentation.}
 \end{itemize}
 
-\subsection[Positioning System]{\textcolor{blue}{Positioning System}}
-The challenge location is still to be determined and will be announced during preparation phase. To improve the state estimation in a potential GPS denied environment, a camera based positioning system using ArUco marker can be used.
+\subsection{Positioning System}
+The challenge will take place at the \textbf{ILA Berlin} on \textbf{Thursday, 11 June 2026}. To improve state estimation in the GPS-denied indoor environment, a camera-based positioning system using ArUco markers can be used.
 
 Two ArUco markers are attached to each pillar in the hangar. Figure~\ref{fig:aruco-markers} illustrates the IDs of the markers that are attached to the pillars, where the lower ArUco marker is mounted at a height of 2m and the upper marker at 4m. In the notation ``X/Y'', the first number (X) corresponds to the upper marker at 4m height and the second number (Y) to the lower marker at 2m height.
 
@@ -117,10 +116,9 @@ Two ArUco markers are attached to each pillar in the hangar. Figure~\ref{fig:aru
 \end{figure}
 The ArUco markers are from the $DICT\_4\times4\_50$ dictionary and have a size of 0.5m x 0.5m. This information enables positioning in the arena with a view of a single marker.
 
-\subsection[Arbiter / Judge]{\textcolor{blue}{Arbiter / Judge}}
+\subsection{Arbiter / Judge}
 \begin{itemize}
 	\item{A Ground Truth and Scoring Display visible to both teams is desired. This display should show the current match scores.}
 	\item{However, no technical solution is provided by the organizers that collects or distributes real-time information on positioning, scoring, or any other referee-related data.}
 	\item{Teams are therefore encouraged to develop their own sensing and evaluation systems if they wish to monitor swarm position or performance metrics during the match.}
 \end{itemize}
-\color{black}

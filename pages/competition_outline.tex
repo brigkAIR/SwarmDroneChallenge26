@@ -3,7 +3,7 @@
 \section{Competition Rules}
 
 \subsection{Playing Field}
-The playing field is a rectangular area with the following dimensions (Figure 2) :
+The playing field is a rectangular area with the following dimensions (Figure~\ref{fig:playing-field}):
 \begin{itemize}
 	\item{Length: 20 meters}
 	\item{Width: 10 meters}
@@ -97,7 +97,7 @@ The objective of the game is to change the color of the target objects to your t
 	\begin{itemize}
 		\item{Height: \SI{55}{\centi\meter} (open: \SI{73}{\centi\meter}), Width: \SI{57.5}{\centi\meter}, Depth: \SI{37.5}{\centi\meter}}
 	\end{itemize}
-	\item{Detection: The target boxes detect approaching drones via an internal NFT tag attached to the drone. The system can reliably identify drones within a height range of approximately 1--2 meters. Further specifications and details will be provided in an upcoming update.}
+	\item{Detection: The target boxes detect approaching drones via an internal RFID tag attached to the drone. The system can reliably identify drones within a height range of approximately 1--2 meters.}
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.2\linewidth]{figures/brigk_SDC2024_206_R5P_0121.jpg}
@@ -113,63 +113,22 @@ The objective of the game is to change the color of the target objects to your t
 	\item{Start Setup: Drones may be placed inside their designated team zone and powered on within the cage.}
 	\item{Cage Clearance: Once all human operators and staff have exited the cage and the area is confirmed clear, the cage is closed.}
 	\item{Final Start Signal: After the cage is secured, the final start signal is given and all drones are permitted to take off and begin flight operations.}
-	\item{Action: Drones fly around the arena, trigger target objects to change color, and score points for their team. Full scoring rules are defined in Section~\ref{sec:game-logic}.}
-	\item{Target Configuration: The positioning of the target objects within the arena will vary for each match. This ensures that teams cannot pre-program their drones for fixed setups and must rely on real-time perception, adaptability, and autonomous decision-making during gameplay.}
-	\item{Defense Strategy:
+	\item{Action: Drones fly around the arena, trigger target objects to change color, and score game points for their team. Full scoring rules are defined in Section~\ref{sec:game-logic}.}
+\item{Defense Strategy:
 	Teams may defend target boxes by positioning drones nearby.
 	Strictly prohibited: physical obstruction, continuous hovering over targets, capture system interference, and all forms of \textbf{jamming or electronic warfare}.
 	\textbf{"Sitting dead duck" behavior} — that is, passive sitting or hovering directly above the boxes — is not allowed and will lead to \textbf{disqualification}.}
-	\item{Time Limit: The game lasts for a maximum of 10 minutes. The team with the most points at the end wins the game!}
+	\item{Time Limit: The game lasts for a maximum of 10 minutes. The team with the most game points at the end wins the match!}
 \end{itemize}
 
-% ── REMOVED RULES (red) — superseded by Game Logic section ──────────────────
-\color{red}
-\subsubsection[Scoring (removed)]{\textcolor{red}{Scoring (removed --- see Game Logic)}}
-
-\begin{itemize}[label=--]
-
-\item{Scoring Methods:
-	\begin{itemize}
-		\item Standard Capture (1 Point): Drone captures target box, holds for validation time, returns to home zone before re-capture.
-		\item Special Capture (5 Points): Single drone captures box, entire team returns to home base together.
-		\item Simultaneous Capture (10 Points): Multiple drones capture boxes at the same time.
-	\end{itemize}
-}
-
-\item{Capture Stability:
-A target box must remain in the capturing team's color for at least \textbf{5 seconds} to validate capture.
-Own drone must hover over box for \textbf{2 seconds} to revert color change.
-Instant/rapid changes do not count.}
-
-\item{Home Zone Validation:
-The drone or drone team must enter the home zone completely and remain inside for at least \textbf{5 seconds}.
-Brief or partial contact with the home zone does not validate a capture.}
-
-\item{Simultaneous Capture:
-Bonus points are awarded only when two or more \textbf{different target boxes} are captured by different drones of the same team \textbf{simultaneously}.}
-
-\item{Special Maneuver:
-When all six target objects display the same team color continuously for at least \textbf{5 seconds}, the team wins the game instantly.
-Temporary or unstable color states do not trigger a victory.}
-
-\end{itemize}
-\color{black}
-
-% ── NEW SECTION (green) ──────────────────────────────────────────────────────
-\color{green!60!black}
-\subsection[Game Logic]{\textcolor{green!60!black}{Game Logic}}
+\subsection{Game Logic}
 \label{sec:game-logic}
 
-\subsubsection[Goal]{\textcolor{green!60!black}{Goal}}
-Score points by conquering enemy boxes and finish the match with more points than the other team, or win instantly with a Special Maneuver.
+\subsubsection{Goal}
+Score \textbf{game points} by conquering enemy boxes and finish the match with more game points than the other team, or win instantly with a Special Maneuver.
 
-\begin{itemize}
-	\item{A team may play with any number of drones.}
-	\item{\texttt{5-point} and \texttt{10-point} captures are only possible if the team started the game with at least \texttt{2} drones.}
-	\item{With fewer than \texttt{2} drones, only \texttt{1-point} captures and the Special Maneuver are possible.}
-\end{itemize}
 
-\subsubsection[ArUco Marker Encoding]{\textcolor{green!60!black}{ArUco Marker Encoding}}
+\subsubsection{ArUco Marker Encoding}
 Each physical box displays an ArUco marker from the \texttt{DICT\_4X4\_50} dictionary. The marker ID encodes the current state of the box:
 \begin{itemize}
 	\item{\texttt{4x} — box is currently \textbf{red}.}
@@ -197,7 +156,7 @@ Each physical box displays an ArUco marker from the \texttt{DICT\_4X4\_50} dicti
 
 When a box is captured, the displayed marker changes with the box color. Example: box \texttt{3} starts red (marker \texttt{43}), is captured by blue (changes to \texttt{33}), then recaptured by red (changes back to \texttt{43}).
 
-\subsubsection[Capturing a Box]{\textcolor{green!60!black}{Capturing a Box}}
+\subsubsection{Capturing a Box}
 An enemy box changes to your team's color if:
 \begin{itemize}
 	\item{your drone hovers over it for at least \texttt{2 seconds}, and}
@@ -208,18 +167,18 @@ A home-zone box changes back to your team's color immediately when recaptured.
 
 After a successful capture, the box is locked for \texttt{5 seconds}.
 
-\paragraph{\textcolor{green!60!black}{1 Point}}
-You get \texttt{1 point} if:
+\paragraph{1 Game Point}
+You get \texttt{1 game point} if:
 \begin{itemize}
 	\item{your team captures an enemy box,}
 	\item{the capturing drone returns home, and}
 	\item{this happens before that box is recaptured by the other team.}
 \end{itemize}
 
-If the box is recaptured first, you still get \texttt{1 point} only if the capturing drone had already reached home; otherwise you get \texttt{0}.
+If the box is recaptured first, you still get \texttt{1 game point} only if the capturing drone had already reached home; otherwise you get \texttt{0 game points}.
 
-\paragraph{\textcolor{green!60!black}{5 Points}}
-You get \texttt{5 points} if:
+\paragraph{5 Game Points}
+You get \texttt{5 game points} if:
 \begin{itemize}
 	\item{your team captures an enemy box,}
 	\item{your team started the game with at least \texttt{2} drones,}
@@ -227,66 +186,81 @@ You get \texttt{5 points} if:
 	\item{then all your drones return home before that box is recaptured.}
 \end{itemize}
 
-If one of your drones was still in the home zone at the moment of capture, \texttt{5 points} are not possible for that attempt. If the box is recaptured before all drones return, \texttt{5 points} are no longer possible, but you may still get \texttt{1 point} if the capturing drone had already reached home.
+If one of your drones was still in the home zone at the moment of capture, \texttt{5 game points} are not possible for that attempt. If the box is recaptured before all drones return, \texttt{5 game points} are no longer possible, but you may still get \texttt{1 game point} if the capturing drone had already reached home.
 
-\paragraph{\textcolor{green!60!black}{10 Points}}
-You get \texttt{10 points} if:
+\paragraph{10 Game Points}
+You get \texttt{10 game points} if:
 \begin{itemize}
 	\item{two different drones of your team capture two different enemy boxes,}
 	\item{both captures occur within less than \texttt{1 second} of each other, and}
 	\item{your team started the game with at least \texttt{2} drones.}
 \end{itemize}
 
-If the timing is too slow, there is no \texttt{10-point} capture and both captures are treated separately (each can still become \texttt{1} or \texttt{5} points). If three boxes are captured almost simultaneously, one valid pair may yield \texttt{10 points} while the third capture is treated separately.
+If the timing is too slow, there is no \texttt{10-point} capture and both captures are treated separately (each can still become \texttt{1} or \texttt{5} game points). If three boxes are captured almost simultaneously, one valid pair may yield \texttt{10 game points} while the third capture is treated separately.
 
-\paragraph{\textcolor{green!60!black}{Home Zone Recapture}}
+\paragraph{Home Zone Recapture}
 If your team recaptures a box in your own home zone:
 \begin{itemize}
 	\item{the box reverts to your team's color immediately, and}
-	\item{you receive \texttt{0 points}.}
+	\item{you receive \texttt{0 game points}.}
 \end{itemize}
 
-This rule prevents defensive point farming.
+This rule prevents defensive game point farming.
 
-\paragraph{\textcolor{green!60!black}{Special Maneuver}}
+\paragraph{Special Maneuver}
 If one team controls all \texttt{6} boxes continuously for at least \texttt{5 seconds}, that team wins the match immediately.
 
 After the instant win is triggered, a final \texttt{10-second} resolution window remains during which already-open scoring attempts may still finish, but the winning team does not change.
 
-\subsubsection[Additional Rules]{\textcolor{green!60!black}{Additional Rules}}
+\subsubsection{Additional Rules}
 \begin{itemize}
 	\item{One drone can only run one scoring attempt at a time.}
 	\item{A drone may only start a new attempt after it has been detected back in its own home zone.}
-	\item{One capture attempt can only score once: \texttt{1}, \texttt{5}, or \texttt{10} points. These scores do not stack for the same attempt.}
-	\item{Score priority for the same capture event: Special Maneuver $>$ \texttt{10} $>$ \texttt{5} $>$ \texttt{1}.}
+	\item{One capture attempt can only score once: \texttt{1}, \texttt{5}, or \texttt{10} game points. These scores do not stack for the same attempt.}
+	\item{Game point priority for the same capture event: Special Maneuver $>$ \texttt{10} $>$ \texttt{5} $>$ \texttt{1}.}
 \end{itemize}
-% ── END NEW SECTION ──────────────────────────────────────────────────────────
-\color{black}
-
 \subsection{Tournament}
+All matches are played head-to-head per the rules in Section~\ref{sec:gameplay}. The tournament is played by \textbf{6 teams} in three stages:
 \begin{itemize}
-	\item{Tournament Format:
-    Follows classic elimination bracket with several rounds. Number of rounds depends on participating teams.
-    \begin{itemize}
-        \item Each match played once per round.
-        \item Matches pit two teams head-to-head per rules in Section~\ref{sec:gameplay}.
-    \end{itemize}
-	}
-	\item{Two teams face each other in each match.}
-	\item{Pairings for the first round are determined by a random draw.}
-	\item{The winner of each match is the team that scores the most points.}
-	\item{Each team plays only once per round.}
-	\item{If the number of teams is odd, one team will temporarily remain without an opponent:}
-	\begin{itemize}[label=--]
-		\item{Voluntary opponent teams are first requested.}
-		\item{If only one team volunteers, it is directly selected.}
-		\item{If multiple teams volunteer, the opponent is chosen by random draw.}
-		\item{If no teams volunteer, a random draw determines an opponent among all remaining teams.}
-	\end{itemize}
-	\item{The team selected as an additional opponent will have two match results, and only the better result counts toward its ranking.}
-	\item{In the event that an assigned opponent cannot participate, a replacement team is drawn by lot or, if unavailable, the match is scored as a technical win (default victory) for the other team.}
-	\item{The final match is determining the overall tournament champion.}
+	\item{\textbf{Opening Round} --- All 6 teams compete. The \textbf{4 best-ranked} teams advance to the semi-finals.}
+	\item{\textbf{Semi-Finals} --- The 4 remaining teams play 2 matches. The \textbf{2 winners} advance to the final.}
+	\item{\textbf{Final} --- The 2 remaining teams compete for the championship.}
 \end{itemize}
+Match pairings are determined by the organizers and announced via Discord. In the event that an assigned opponent cannot participate, a replacement team is drawn by lot or, if unavailable, the match is scored as a technical win for the other team.
 
 \subsection{Winning the Challenge}
-To win the Swarm Drone Challenge, a jury of experts will evaluate the teams' performance in the game as well as their technical approach and the presentation of their work. The winning team is determined by the jury. The specific evaluation criteria will be noted and communicated at a later time.
+\label{sec:winning}
+The overall winner is the team with the most \textbf{challenge points} at the end of the tournament. Challenge points are accumulated from three categories, with a maximum of \textbf{25 challenge points} total:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lc}
+\hline
+\textbf{Category} & \textbf{Max.\ Challenge Points} \\
+\hline
+Match wins (5 challenge points per won match) & 15 \\
+Jury evaluation (pitch \& overall approach) & 10 \\
+Technical report & 5 \\
+\hline
+\textbf{Total} & \textbf{25} \\
+\hline
+\end{tabular}
+\caption{Overall challenge scoring overview.}
+\end{table}
+
+\subsubsection{Match Performance}
+Each won match awards the winning team \textbf{5 challenge points}. A team can win at most one match per stage (Opening Round, Semi-Final, Final), for a maximum of \textbf{15 challenge points} from match performance.
+
+\subsubsection{Jury Evaluation}
+A jury of experts awards up to \textbf{10 challenge points} based on the team's pitch presentation and overall technical approach demonstrated during the competition.
+
+\subsubsection{Technical Report}
+Each team must submit a technical report that describes their solution. The report is evaluated by the jury for up to \textbf{5 challenge points} and must address the following:
+\begin{itemize}
+	\item{\textbf{Localisation} --- describe the localisation approach in detail, e.g.\ Kalman filter state definition, sensor fusion, or other state estimation methods.}
+	\item{\textbf{Flight Control \& Trajectory Planning} --- explain the flight controller design and trajectory planning strategies used.}
+	\item{\textbf{Swarm Strategy} --- describe how the drones coordinate and cooperate as a swarm to achieve the mission objective.}
+\end{itemize}
+Teams that open-source their code will receive a positive consideration in the technical report evaluation.
+
+The technical report is due \textbf{4 days before the final}.
